@@ -18,8 +18,9 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
-    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-        <div class="flex flex-col items-center">
+    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-cover bg-center"
+        style="background-image: url('{{ asset('images/login-bg.jpg') }}');">
+        <div class="flex flex-col items-center bg-white/90 p-6 rounded-lg shadow-lg mb-6 max-w-md w-full mx-4">
             <a href="/">
                 <img src="{{ asset('images/dom.gif') }}" alt="Logo" class="w-24 h-auto mb-4" />
             </a>

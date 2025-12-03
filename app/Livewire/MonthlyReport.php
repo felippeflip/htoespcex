@@ -26,8 +26,8 @@ class MonthlyReport extends Component
             ->get();
 
         $totalAmount = $payments->sum('amount');
-        $totalPaid = $payments->where('status', 'PAID')->sum('amount');
-        $totalPending = $payments->where('status', 'PENDING')->sum('amount');
+        $totalPaid = $payments->where('status', 'Concluído')->sum('amount');
+        $totalPending = $payments->where('status', 'Pendente')->sum('amount');
 
         return view('livewire.monthly-report', [
             'payments' => $payments,
