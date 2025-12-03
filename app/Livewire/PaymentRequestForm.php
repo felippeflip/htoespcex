@@ -44,9 +44,9 @@ class PaymentRequestForm extends Component
         $config = \Illuminate\Support\Facades\DB::table('configurations')
             ->where('key', 'pagtesouro_codigo_servico')
             ->first();
-        
+
         $this->codigo_servico = $config ? $config->value : null;
-        
+
         if (!$this->codigo_servico) {
             session()->flash('error', 'Código de Serviço não configurado no sistema.');
         }
@@ -89,7 +89,7 @@ class PaymentRequestForm extends Component
         ];
 
         // Remover campos nulos ou vazios que não são obrigatórios
-        $data = array_filter($data, function($value) {
+        $data = array_filter($data, function ($value) {
             return !is_null($value) && $value !== '';
         });
 
@@ -113,14 +113,16 @@ class PaymentRequestForm extends Component
                 'valor_outros_acrescimos' => $this->valor_outros_acrescimos,
                 'description' => $this->description,
                 'due_date' => $this->due_date,
-                'status' => 'PENDING', // Ou mapear do response['situacao']['codigo']
+                'status' => 'Pendente', // Ou mapear do response['situacao']['codigo']
                 'pagtesouro_id' => $response['idPagamento'],
                 'proxima_url' => $response['proximaUrl'] ?? null,
                 'modo_navegacao' => 2,
             ]);
 
             if (isset($response['proximaUrl'])) {
-                return redirect()->away($response['proximaUrl']);
+                $this->dispatch('payment-created', url: $response['proximaUrl']);
+                session()->flash('message', 'Solicitação criada com sucesso! O pagamento foi aberto em uma nova aba.');
+                return redirect()->route('payment-requests.index');
             }
 
             session()->flash('message', 'Solicitação criada, mas URL de pagamento não retornada.');
@@ -133,6 +135,6 @@ class PaymentRequestForm extends Component
 
     public function render()
     {
-        return view('livewire.payment-request-form');
+        return view('livewire.payment-request-form')->layout('layouts.app');
     }
 }

@@ -22,8 +22,7 @@ class MonthlyReport extends Component
         $startDate = Carbon::createFromDate($this->year, $this->month, 1)->startOfMonth();
         $endDate = Carbon::createFromDate($this->year, $this->month, 1)->endOfMonth();
 
-        $payments = PaymentRequest::where('user_id', auth()->id())
-            ->whereBetween('created_at', [$startDate, $endDate])
+        $payments = PaymentRequest::whereBetween('created_at', [$startDate, $endDate])
             ->get();
 
         $totalAmount = $payments->sum('amount');
@@ -35,6 +34,6 @@ class MonthlyReport extends Component
             'totalAmount' => $totalAmount,
             'totalPaid' => $totalPaid,
             'totalPending' => $totalPending,
-        ]);
+        ])->layout('layouts.app');
     }
 }

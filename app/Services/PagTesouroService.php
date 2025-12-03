@@ -39,7 +39,7 @@ class PagTesouroService
     {
         try {
             $response = Http::withToken($this->token)
-                ->get("{$this->baseUrl}/api/gru/solicitacao-pagamento/{$idPagamento}");
+                ->get("{$this->baseUrl}/api/gru/pagamentos/{$idPagamento}");
 
             if ($response->successful()) {
                 return $response->json();

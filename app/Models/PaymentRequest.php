@@ -29,6 +29,9 @@ class PaymentRequest extends Model
         'valor_outros_acrescimos',
         'proxima_url',
         'modo_navegacao',
+        'tipo_pagamento_escolhido',
+        'nome_psp',
+        'transacao_psp',
     ];
 
     protected $casts = [
