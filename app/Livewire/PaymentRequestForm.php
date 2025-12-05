@@ -97,7 +97,7 @@ class PaymentRequestForm extends Component
         $response = $pagTesouroService->createPaymentRequest($data);
 
         if ($response && isset($response['idPagamento'])) {
-            PaymentRequest::create([
+            $paymentRequest = PaymentRequest::create([
                 'user_id' => auth()->id(),
                 'reference_code' => $referenceCode,
                 'codigo_servico' => $this->codigo_servico,
@@ -120,8 +120,10 @@ class PaymentRequestForm extends Component
             ]);
 
             if (isset($response['proximaUrl'])) {
-                $this->dispatch('payment-created', url: $response['proximaUrl']);
-                session()->flash('message', 'Solicitação criada com sucesso! O pagamento foi aberto em uma nova aba.');
+                // $this->dispatch('payment-created', url: $response['proximaUrl']); // Removido
+                session()->flash('paymentUrl', $response['proximaUrl']);
+                session()->flash('paymentId', $paymentRequest->id); // Para identificar na lista
+                session()->flash('message', 'Solicitação criada com sucesso!');
                 return redirect()->route('payment-requests.index');
             }
 

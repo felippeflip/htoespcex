@@ -45,6 +45,16 @@
                     </div>
                 @endif
 
+                @if (session()->has('paymentUrl'))
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+                        role="alert">
+                        <span class="font-bold">Solicitação criada com sucesso!</span>
+                        <span class="block sm:inline">Clique <a href="{{ session('paymentUrl') }}" target="_blank"
+                                rel="noopener noreferrer" class="underline font-bold">aqui para abrir o pagamento</a> em uma
+                            nova aba.</span>
+                    </div>
+                @endif
+
                 @if (session()->has('error'))
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
                         <span class="block sm:inline">{{ session('error') }}</span>
@@ -106,14 +116,25 @@
                                                         <td class="px-6 py-4 whitespace-nowrap">
                                                             <span
                                                                 class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                                                                                                                                    {{ $request->status === 'Concluído' ? 'bg-green-100 text-green-800' :
+                                                                                                                                                                                                                    {{ $request->status === 'Concluído' ? 'bg-green-100 text-green-800' :
                                 ($request->status === 'Pendente' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
                                                                 {{ $request->status }}
                                                             </span>
                                                         </td>
                                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                            <button wire:click="checkStatus({{ $request->id }})"
-                                                                class="text-indigo-600 hover:text-indigo-900">Atualizar Status</button>
+                                                            <div class="flex flex-col space-y-2">
+                                                                <button wire:click="checkStatus({{ $request->id }})"
+                                                                    class="text-indigo-600 hover:text-indigo-900 text-left">
+                                                                    Atualizar Status
+                                                                </button>
+
+                                                                @if (session()->has('paymentUrl') && session('paymentId') == $request->id)
+                                                                    <a href="{{ session('paymentUrl') }}" target="_blank" rel="noopener noreferrer"
+                                                                        class="inline-flex items-center justify-center px-3 py-1 border border-transparent text-xs font-medium rounded text-green-700 bg-green-100 hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                                                        Abrir Pagamento
+                                                                    </a>
+                                                                @endif
+                                                            </div>
                                                         </td>
                                                     </tr>
                             @endforeach
